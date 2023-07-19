@@ -7,16 +7,16 @@ const Label = styled.label`
   font-size: 16px;
 `;
 
-function StepThree({ handleInputChange }) {
+function StepThree({ register }) {
   return (
     <>
       <Label>
         Phonenumber:
-        <input type="text" name="phoneNumber" onChange={handleInputChange} />
+        <input type="text" name="phoneNumber" {...register("phoneNumber")} />
       </Label>
       <Label>
         Age:
-        <input type="number" name="age" onChange={handleInputChange} />
+        <input type="number" name="age" {...register("age")} />
       </Label>
     </>
   );

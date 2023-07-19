@@ -7,16 +7,16 @@ const Label = styled.label`
   font-size: 16px;
 `;
 
-function StepTwo({ handleInputChange }) {
+function StepTwo({ register }) {
   return (
     <>
       <Label>
         Email:
-        <input type="email" name="email" onChange={handleInputChange} />
+        <input type="email" name="email" {...register("email")} />
       </Label>
       <Label>
         Password:
-        <input type="password" name="password" onChange={handleInputChange} />
+        <input type="password" name="password" {...register("password")} />
       </Label>
     </>
   );

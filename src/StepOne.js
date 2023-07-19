@@ -7,16 +7,21 @@ const Label = styled.label`
   font-size: 16px;
 `;
 
-function StepOne({ handleInputChange }) {
+function StepOne({ register, errors }) {
   return (
     <>
       <Label>
         First Name:
-        <input type="text" name="firstName" onChange={handleInputChange} />
+        <input
+          type="text"
+          name="firstName"
+          {...register("firstName", { required: true })}
+        />
+        {errors.firstName && <p>Firstname is required.</p>}
       </Label>
       <Label>
         Last Name:
-        <input type="text" name="lastName" onChange={handleInputChange} />
+        <input type="text" name="lastName" {...register("lastName")} />
       </Label>
     </>
   );

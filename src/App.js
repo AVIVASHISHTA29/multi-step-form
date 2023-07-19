@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import StepOne from "./StepOne";
 import StepTwo from "./StepTwo";
 import { Button } from "./components/Button";
 import StepThree from "./StepThree";
+import { useForm } from "react-hook-form";
 
 const Form = styled.form`
   display: flex;
@@ -25,19 +26,26 @@ const Wrapper = styled.div`
 
 function App() {
   const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState({});
-  const totalPages = 4;
-  const handleInputChange = (e) => {
-    console.log("Inpit Change", {
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  // const [formData, setFormData] = useState({});
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const handleSubmit = (e) => {
+  const totalPages = 4;
+
+  // const handleInputChange = (e) => {
+  //   console.log("Input Change", {
+  //     ...formData,
+  //     [e.target.name]: e.target.value,
+  //   });
+  //   setFormData({ ...formData, [e.target.name]: e.target.value });
+  // };
+
+  const formSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+    // console.log(formData);
   };
 
   const nextStep = () => {
@@ -47,6 +55,11 @@ function App() {
   const prevStep = () => {
     if (step > 1) setStep(step - 1);
   };
+
+  useEffect(() => {
+    console.log("errors", errors);
+    if (errors.firstName) errors.firstName.ref.style.backgroundColor = "red";
+  }, [errors]);
 
   return (
     <>
@@ -59,20 +72,21 @@ function App() {
         }}
       ></div>
       <Wrapper>
-        <Form onSubmit={handleSubmit}>
-          {/* {step === 1 && <StepOne handleInputChange={handleInputChange} />}
-        {step === 2 && <StepTwo handleInputChange={handleInputChange} />} */}
-
+        <Form
+          onSubmit={handleSubmit((data) => {
+            console.log("form Data", data);
+          })}
+        >
           {(() => {
             switch (step) {
               case 1:
-                return <StepOne handleInputChange={handleInputChange} />;
+                return <StepOne register={register} errors={errors} />;
               case 2:
-                return <StepTwo handleInputChange={handleInputChange} />;
+                return <StepTwo register={register} />;
               case 3:
-                return <StepThree handleInputChange={handleInputChange} />;
+                return <StepThree register={register} />;
               case 4:
-                return <StepThree handleInputChange={handleInputChange} />;
+                return <StepThree register={register} />;
               default:
                 return null;
             }
@@ -83,7 +97,7 @@ function App() {
               Back
             </Button>
           )}
-          {step < totalPages ? (
+          {step < totalPages && !errors ? (
             <Button type="button" onClick={nextStep}>
               Next
             </Button>
